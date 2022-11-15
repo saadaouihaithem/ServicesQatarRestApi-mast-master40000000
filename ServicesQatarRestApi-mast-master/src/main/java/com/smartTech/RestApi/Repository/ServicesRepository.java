@@ -10,6 +10,9 @@ import java.util.List;
 @Repository
 public interface ServicesRepository extends JpaRepository<Services,Long> {
 
+
+
+
     List<Services> findBytitle(String title);
   //@Query("FROM Services WHERE address =: address ")
 

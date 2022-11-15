@@ -3,14 +3,14 @@ package com.smartTech.RestApi.Service;
 import com.smartTech.RestApi.Model.Services;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ServicesServices {
 
-
+    Services getSingleService(Long id );
     List<Services> getServices();
     Services saveServices(Services services);
 
-    Services getSingleService(Long id);
 
     void deleteService(Long id );
 
@@ -35,7 +35,8 @@ public interface ServicesServices {
     void deleteService(String description);
 
 
-
     List<Services> findViewsWithSortingAsc();
+
+
 
 }

@@ -16,7 +16,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -37,6 +39,8 @@ import java.security.interfaces.RSAPublicKey;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
@@ -60,36 +64,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors().and()
                 .csrf().disable()
-                .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers("/api/auth/**")
-                        .permitAll()
-                        .antMatchers(HttpMethod.GET, "/api/**")
-                        .permitAll()
-                        .antMatchers(HttpMethod.GET, "/api/**")
-                        .permitAll()
-                        .antMatchers(HttpMethod.GET, "/api/**")
-                        .permitAll()
-                        .antMatchers(HttpMethod.POST, "/api/login")
-                        .permitAll()
-                        .antMatchers(HttpMethod.POST, "/api/logout")
-                        .permitAll()
-                        .antMatchers(HttpMethod.POST, "/api/v1/**")
-                        .permitAll()
-                        .antMatchers(HttpMethod.GET, "/api/v1/**")
-                        .permitAll()
-                        .antMatchers(HttpMethod.DELETE, "/api/v1/**")
-                        .permitAll()
-                        .antMatchers(HttpMethod.PUT, "/api/v1/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling(exceptions -> exceptions
-                        .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
-                        .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
-                );
-    }
+                .authorizeRequests()
+                    .antMatchers("/", "/Services", "/api/auth/signup","/api/auth/login").permitAll()
+                    .antMatchers("/services/**","/user/**").access("hasRole('ROLE_USER')")
+                    .and()
+                    .formLogin()
+                    .loginPage("/login")
+                    .failureUrl("/login?error")
+                    .defaultSuccessUrl("/services")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
+                    .and()
+                    .logout()
+                    .logoutSuccessUrl("/login?logout")
+                    .and()
+                    .exceptionHandling()
+                    .accessDeniedPage("/403");
+        }
+
+
 
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -108,6 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+
     JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(this.publicKey).build();
     }

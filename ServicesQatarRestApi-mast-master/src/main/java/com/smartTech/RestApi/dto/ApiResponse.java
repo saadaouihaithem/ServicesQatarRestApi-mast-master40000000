@@ -13,7 +13,6 @@ public class ApiResponse <T>{
 
 
         public int status;
-     T Services;
+         T Services;
     }
-
 

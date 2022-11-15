@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -67,5 +68,6 @@ public class Services{
     @UpdateTimestamp
     @Column(name="created_at")
     private LocalDateTime created_at;
+    public ArrayList<Image> images;
 
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -30,10 +31,13 @@ public class ServicesController {
 
 
 
-    @GetMapping("/Services/{id}")
+    @GetMapping("/getSingleService/{id}")
     public ResponseEntity<Services> getSingleService(@PathVariable Long id) {
-        return new ResponseEntity<Services> (servicesServices.getSingleService(id), HttpStatus.OK);
+        return new ResponseEntity<> (servicesServices.getSingleService(id), HttpStatus.OK);
     }
+
+
+
 
 
     @DeleteMapping("/Services")

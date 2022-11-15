@@ -1,5 +1,8 @@
 package com.smartTech.RestApi.Model;
 
+import javax.persistence.Entity;
+
+
 public class SmsPojo {
 
     private String to;

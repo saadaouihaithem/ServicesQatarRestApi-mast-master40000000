@@ -31,10 +31,16 @@ public class ServicesServiceImpl implements ServicesServices {
 
 
 // find user by id from the database
-    @Override
-    public Services getSingleService(Long id) {
-        return servicesRepository.getById(id);
+
+@Override
+public Services getSingleService(Long id) {
+    Optional<Services> services = servicesRepository.findById(id);
+    if (services.isPresent()) {
+
+        return services.get();
     }
+    throw new RuntimeException("Service not available" + id);
+}
 
     @Override
     public void deleteService(Long id) {

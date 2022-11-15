@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name="Region")
+@Table(name="region")
 public class Region{
 
     @Id

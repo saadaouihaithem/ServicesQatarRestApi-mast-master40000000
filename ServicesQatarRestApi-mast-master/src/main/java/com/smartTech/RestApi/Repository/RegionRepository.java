@@ -13,4 +13,7 @@ public interface RegionRepository extends JpaRepository<Region,Integer> {
     @Query("FROM Region ORDER BY region_id ASC")
     List<Region> findAllOrderByPopulationAsc();
 
+
 }
+
+
