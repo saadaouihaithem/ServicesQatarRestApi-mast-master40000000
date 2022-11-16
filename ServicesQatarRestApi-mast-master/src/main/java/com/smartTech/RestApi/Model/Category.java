@@ -7,23 +7,19 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import java.util.List;
-
-import static javax.persistence.FetchType.LAZY;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name="region")
-public class Region{
+@Table(name="Category")
+public class Category{
 
     @Id
-
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    public Long  region_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public String name;
     public String name_ar;
+    public String image;
+    public int  category_id ;
+    public int properties_count;
     public int services_count;
-
 }

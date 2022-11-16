@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static javax.persistence.FetchType.LAZY;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -68,6 +70,7 @@ public class Services{
     @UpdateTimestamp
     @Column(name="created_at")
     private LocalDateTime created_at;
+
     public ArrayList<Image> images;
 
 }

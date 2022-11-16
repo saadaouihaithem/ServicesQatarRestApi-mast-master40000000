@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RegionRepository extends JpaRepository<Region,Integer> {
+public interface RegionRepository extends JpaRepository<Region,Long> {
     @Query("FROM Region ORDER BY region_id ASC")
     List<Region> findAllOrderByPopulationAsc();
 

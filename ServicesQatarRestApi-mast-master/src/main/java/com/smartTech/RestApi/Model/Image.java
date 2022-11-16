@@ -10,17 +10,18 @@ import lombok.NoArgsConstructor;
 import lombok.Builder;
 import javax.persistence.*;
 
+
 @Entity
-@Table(name = "image")
+@Table(name = "Image")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Image {
     @Id
-    @Column(name = "id")
+    @Column(name = "Image_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Image_id;
 
     @Column(name = "name")
     private String name;
@@ -28,6 +29,8 @@ public class Image {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "image", unique = false, nullable = false, length = 100000)
+    @Column(name = "image", unique = false, nullable = false, length = 100000000)
     private byte[] image;
+
+
 }

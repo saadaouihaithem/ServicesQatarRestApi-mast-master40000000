@@ -1,6 +1,6 @@
 package com.smartTech.RestApi.Service;
 
-import com.smartTech.RestApi.Model.Agency;
+import com.smartTech.RestApi.Model.Conpany;
 
 
 import java.util.List;
@@ -8,7 +8,9 @@ import java.util.List;
 public interface AgencyService {
 
 
-    Agency getSingleAgency(Long id );
-    List<Agency> getAgencies();
-    Agency saveAgency(Agency agency);
+    Conpany getSingleAgency(Long id );
+    List<Conpany> getAgencies();
+    Conpany saveAgency(Conpany agency);
+
+    List<Conpany> findViewsWithSortingAsc();
 }

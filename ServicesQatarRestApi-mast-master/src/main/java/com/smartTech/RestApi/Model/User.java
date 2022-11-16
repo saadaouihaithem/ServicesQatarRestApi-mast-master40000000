@@ -47,6 +47,7 @@ public class User {
     @Column(name="created_at")
     private Instant created;
     private boolean enabled;
+    @JsonIgnore
     private String token;
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime tokenCreationDate;
@@ -55,6 +56,9 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"))
           /*  inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")*/
     private Set<Role> roles;
+
+
+
 
 
 }

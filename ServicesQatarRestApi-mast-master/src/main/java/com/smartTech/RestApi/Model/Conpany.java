@@ -3,6 +3,7 @@ package com.smartTech.RestApi.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,8 +14,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name="Agency")
-public class Agency{
+@Table(name="Conpany")
+public class Conpany {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,8 +33,12 @@ public class Agency{
     public int views;
     public String description;
     public String description_ar;
+    @CreationTimestamp
+    @Column(name="updated_at", nullable = false, updatable = false)
     public Date updated_at;
     public String region_name;
     public String region_name_ar;
     public ArrayList<Image> images;
+
+
 }

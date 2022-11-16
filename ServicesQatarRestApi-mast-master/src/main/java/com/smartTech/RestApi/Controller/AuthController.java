@@ -2,10 +2,11 @@ package com.smartTech.RestApi.Controller;
 
 
 
-import com.smartTech.RestApi.Model.Role;
 import com.smartTech.RestApi.Model.User;
 import com.smartTech.RestApi.Repository.RoleRepository;
 import com.smartTech.RestApi.Repository.UserRepository;
+import com.smartTech.RestApi.Service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,30 +18,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
-
-
-import com.smartTech.RestApi.Service.AuthService;
-import com.smartTech.RestApi.Service.RefreshTokenService;
-import com.smartTech.RestApi.dto.AuthenticationResponse;
 import com.smartTech.RestApi.dto.LoginRequest;
-import com.smartTech.RestApi.dto.RefreshTokenRequest;
 import com.smartTech.RestApi.dto.RegisterRequest;
 import lombok.AllArgsConstructor;
-
-
-import javax.validation.Valid;
-
-
-import java.util.Collections;
-
-import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+
 
 
     private final UserRepository userRepository;
@@ -49,10 +36,14 @@ public class AuthController {
     private final RoleRepository roleRepository;
 
 
+    @Autowired
+    private UserService userService;
+
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
-    private final RefreshTokenService refreshTokenService;
+
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody RegisterRequest registerRequest) {
@@ -75,19 +66,6 @@ public class AuthController {
     }
 
 
-
-
-
-
-
-    @GetMapping(value="/accountVerification/{token}")
-    public ResponseEntity<String> verifyAccount(@PathVariable String token) {
-        authService.verifyAccount(token);
-        return new ResponseEntity<>("Your Account Activated Successfully", OK);
-    }
-
-
-
     @PostMapping(value="/login")
     public ResponseEntity <String> authenticateUser (@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -97,16 +75,25 @@ public class AuthController {
         return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
     }
 
-    @PostMapping("/refresh/{token}")
-    public AuthenticationResponse refreshTokens(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
-        return authService.refreshToken(refreshTokenRequest);
+    @PostMapping("/forgot-password")
+    public String forgotPassword(@RequestParam String email) {
+
+        String response = userService.forgotPassword(email);
+
+        if (!response.startsWith("Invalid")) {
+            response = "http://localhost:8080/reset-password?token=" + response;
+        }
+        return response;
     }
 
-    @PostMapping(value="/logout")
-    public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
-        refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
-        return ResponseEntity.status(OK).body("Refresh Token Deleted Successfully!!");
+    @PutMapping("/reset-password")
+    public String resetPassword(@RequestParam String token,
+                                @RequestParam String password) {
+
+        return userService.resetPassword(token, password);
     }
+
+
 
 
 
